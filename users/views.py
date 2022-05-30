@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .forms import UserForm
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 from django.contrib import messages
 from .forms import UserProfileForm,UserForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -44,3 +44,9 @@ def user_login(request):
             messages.success(request,'lütfen bilgilerinizi kontrol edin.')
             return redirect('login')
     return render(request,'user/user_login.html',{'form':form})
+
+
+def user_logout(request):
+    messages.success(request, "You Logout!")
+    logout(request)
+    return render(request,'user/logout.html')

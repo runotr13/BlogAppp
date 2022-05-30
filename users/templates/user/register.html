@@ -2,16 +2,19 @@
 
 <h2>Registration Form</h2>
 
+{% if request.user.is_authenticated %}
+    
 <h3>Thanks for registering</h3>
+{% else %}
 
-<form action="" method="post" enctype="multipart/form-data" class="w-50">
+<form action="" method="post" enctype="multipart/form-data" class="container-fluid w-75">
     {% csrf_token %} 
     {{ form_user | crispy }} 
     {{ form_profile | crispy }}
     <button type="submit" class="btn btn-danger">Register</button>
     <hr>
-     Already have an account?<a class='' href={% url 'home' %}> Sign In </a>
+     Already have an account?<a class='text-decoration-none' href={% url 'home' %}> Sign In </a>
 
 </form>
-
+{% endif %}
 {% endblock container %}
