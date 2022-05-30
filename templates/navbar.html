@@ -39,7 +39,7 @@
                  {% url 'profile' %} 
                  {% endcomment %}
                    
-                <a class="nav-link text-light" href="#">Profile</a>
+                <a class="nav-link text-light" href="{% url 'profile' request.user.id  %} ">Profile</a>
               </li>
               <li class="nav-item ">
                 

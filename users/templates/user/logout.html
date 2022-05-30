@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+
+
 {% block container %}
-<div class="container-fluid">
-    <a class='text-decoration-none ' href="{% url 'login' %}"> Login Again </a>
-</div>
+<hr>
+<p>You have been logout!</p>
+<hr>
+<a class='text-decoration-none' href="{% url 'home'%}"> Login Again </a>
+
+    
 {% endblock container %}
     

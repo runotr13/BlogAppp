@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
-from .forms import UserForm
+
+from .models import UserProfiletwo
+from .forms import UserForm, UserProfileForms
 from django.contrib.auth import login,logout
 from django.contrib import messages
 from .forms import UserProfileForm,UserForm
@@ -50,3 +52,14 @@ def user_logout(request):
     messages.success(request, "You Logout!")
     logout(request)
     return render(request,'user/logout.html')
+
+
+def user_profile(request,id):
+    userform = UserProfileForms(id=user)
+    user = request.user.id
+    
+    context = {
+        "userform" : userform ,
+    }
+    
+    return render(request,'user/profile.html',context)
