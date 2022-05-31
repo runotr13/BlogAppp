@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect
-
-from .models import UserProfiletwo
+from .models import UserProfile, UserProfiletwo
 from .forms import UserForm, UserProfileForms
 from django.contrib.auth import login,logout
 from django.contrib import messages
@@ -33,6 +32,8 @@ def register(request):
     }
     return render(request,'user/register.html',context)
 
+
+
 def user_login(request):
     form = AuthenticationForm(request,data=request.POST) 
     #! form dolu geldıyse bılgılerı otomatık ıcıne  koyar. AuthenticationForm'a özel 
@@ -43,7 +44,7 @@ def user_login(request):
             login(request,user)
             return redirect('home')
         else:
-            messages.success(request,'lütfen bilgilerinizi kontrol edin.')
+            messages.error(request,'lütfen bilgilerinizi kontrol edin.')
             return redirect('login')
     return render(request,'user/user_login.html',{'form':form})
 
@@ -54,12 +55,18 @@ def user_logout(request):
     return render(request,'user/logout.html')
 
 
-def user_profile(request,id):
-    userform = UserProfileForms(id=user)
-    user = request.user.id
-    
-    context = {
-        "userform" : userform ,
-    }
-    
-    return render(request,'user/profile.html',context)
+def user_profile(request):
+     if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile is updated successfully')
+            return redirect(to='users-profile')
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})

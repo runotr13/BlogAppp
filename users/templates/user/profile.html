@@ -32,7 +32,7 @@
     </div>
     <form action="" method="post" enctype="multipart/form-data" class="container-fluid w-75">
         {% csrf_token %} 
-        {{ userform | crispy }} 
+        {{ user | crispy }} 
         <button type="submit" class="btn btn-danger">Upload</button>
         
     </form>
