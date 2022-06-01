@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block container %}
+{% load crispy_forms_tags %}
+    <form action="" method="POST" enctype="multipart/form-data" class="container-fluid w-50 border mt-2">
+        {% csrf_token %}
+        
+            {% if post.image %}
+           <div class="d-flex">
+           <img src="../../media/{{ post.image }}" alt="currentuserpng" style="width: 18rem; height: 200px;" >
+            <p class="h1">{{post.user}}</p>
+           </div>
+            {% else %}
+            <div class="d-flex">
+            <img src="../../static/image/user.png"  style="width: 18rem; height: 200px;">
+            <p class="h1">{{post.user}}</p>
+            </div>
+            
+            {% endif %}
+        {{ form | crispy }}
+        <input type="submit" value="SEND" class="btn btn-secondary mb-2">
+
+    </form>
+    {% if post.user == request.user %}
+   <div class="container-fluid w-50 pt-2">
+   
+    <a href="" >
+        <input type="submit" value="Edit" class='btn btn-primary ' >
+    </a>
+    <a href="{% url 'postDelete' post.id %}">
+        <input type="submit" value="Delete" class="btn btn-danger">
+    </a>
+   </div>
+    {% endif %}
+    
+    
+{% endblock container %} 

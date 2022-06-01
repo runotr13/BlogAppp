@@ -1,42 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<style>
-    img{
-        width: 140px;
-        border-radius: 100%;
-    }
-    .profilepic{
-        display: flex;
-
-    }
-    span{
-        font-size: 2rem;
-    }
-</style>
-<body>
 {% extends 'base.html' %}
 {% load static %}
+
+
 
 {% block container %}
 
 {% load crispy_forms_tags %}
-    <div class="w-75 container-fluid pb-3">
-    <img src="{% static 'image/user.png' %}" alt="user_png">
-    <span>{{request.user}}</span>
-    </div>
-    <form action="" method="post" enctype="multipart/form-data" class="container-fluid w-75">
-        {% csrf_token %} 
-        {{ user | crispy }} 
-        <button type="submit" class="btn btn-danger">Upload</button>
-        
+  <div class="container-fluid w-75">
+      
+      {% if form.profile.image %}
+      <img src="{form_profile.image}" alt="">
+      {% else %}
+      <img src="{% static 'image/user.png' %}" alt="user_png">
+      {% endif %}
+          
+    <img src="{form_profile.image}" alt="">
+    <h1>{{user.username}}</h1>
+    <p>{{user.email}}</p>
+    <form action="" method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        {{ form | crispy }}
+        {{ form_profile | crispy }}
+        <input type="submit" value="Update" class="btn btn-primary">
     </form>
+  </div>
 {% endblock container %}
-</body>
-</html>
-    

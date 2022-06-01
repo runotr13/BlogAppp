@@ -1,13 +1,11 @@
 from django.shortcuts import render,redirect
-from .models import UserProfile, UserProfiletwo
-from .forms import UserForm, UserProfileForms
+from .models import UserProfile
+from .forms import UserForm, UserUpdateForm,UserProfileForm
 from django.contrib.auth import login,logout
 from django.contrib import messages
 from .forms import UserProfileForm,UserForm
 from django.contrib.auth.forms import AuthenticationForm
 
-def Home(request):
-    return render(request,'user/home.html')
 
 def register(request):
     form_user = UserForm()
@@ -24,7 +22,7 @@ def register(request):
             profile.save()  #! kaydettik.
             login(request,user) #! şuanki kullanıcı bılgılerıne gore login işlemi yap.
             messages.success(request,'Register Succesfull')
-            return redirect('home')   
+            return redirect('list')   
 
     context = {
         "form_user" : form_user,
@@ -42,7 +40,7 @@ def user_login(request):
         if user:
             messages.success(request,'login successfull')
             login(request,user)
-            return redirect('home')
+            return redirect('list')
         else:
             messages.error(request,'lütfen bilgilerinizi kontrol edin.')
             return redirect('login')
@@ -55,18 +53,23 @@ def user_logout(request):
     return render(request,'user/logout.html')
 
 
+
 def user_profile(request):
-     if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+    user = request.user
+    profile = UserProfile.objects.get(user=user)
+    form = UserUpdateForm(instance=profile)
+    form_profile = UserProfileForm(instance=profile)
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST,request.FILES,instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('list')
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            messages.success(request, 'Your profile is updated successfully')
-            return redirect(to='users-profile')
-    else:
-        user_form = UpdateUserForm(instance=request.user)
-        profile_form = UpdateProfileForm(instance=request.user.profile)
 
-    return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+    context = {
+        "form" : form,
+        "form_profile" : form_profile,
+        'user' : user,
+        "profile" : profile
+    }
+    return render(request,'user/profile.html',context)
