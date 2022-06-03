@@ -9,5 +9,5 @@ class UserProfile(models.Model):
     #! on_delete=models.CASCADE = kullanici silinirse usersprofile sayfasındakılerde sılınsın.
     def __str__(self):
         return self.user.username
-
+    
 

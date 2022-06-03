@@ -19,6 +19,35 @@ class Post(models.Model):
         ('P','Published'),
     ]
     status = models.CharField(max_length=2, choices=POST_STATUS_CHOİCES, default='D')
+    comment_count = models.IntegerField(default=0)
+    like_count = models.IntegerField(default=0)
+
+
     def __str__(self):
-        return f"{self.title} by {self.user.username}",
-        
+        return f"{self.title} by {self.user.username}"
+
+class PostView(models.Model):
+    timeStamp = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"[ {self.timeStamp} ] POST TITLE=> {self.post.title} "
+
+
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timeStamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"[ {self.user} ] POST TITLE=> {self.post.title} "
+
+class Comment(models.Model):
+    timeStamp = models.DateTimeField(auto_now_add=True)
+    content = models.TextField(max_length=300)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.post.title    
+

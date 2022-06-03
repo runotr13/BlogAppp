@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'blog',
     'crispy_forms',
     "crispy_bootstrap5",
+    'django.contrib.humanize',
+
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

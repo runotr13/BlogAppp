@@ -64,12 +64,11 @@ def user_profile(request):
         if form.is_valid():
             form.save()
             return redirect('list')
-
+        
 
     context = {
         "form" : form,
         "form_profile" : form_profile,
-        'user' : user,
         "profile" : profile
     }
     return render(request,'user/profile.html',context)
